@@ -4,28 +4,21 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
-
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.5',
         -- or                            , branch = '0.1.x',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
-
     use ({ 
         "catppuccin/nvim", as = "catppuccin",
         config = function()
             vim.cmd('colorscheme catppuccin')
         end
     })
-
     use ({ 'nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'} })
-
     use ({ 'nvim-treesitter/playground' })
-
     use ({ 'theprimeagen/harpoon' })
-
     use ({ 'mbbill/undotree' })
-
     use ({ 'tpope/vim-fugitive' })
     use {
         'VonHeikemen/lsp-zero.nvim',
@@ -43,14 +36,11 @@ return require('packer').startup(function(use)
             {'L3MON4D3/LuaSnip'},
         }
     }
-
     use("lukas-reineke/indent-blankline.nvim")
-
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     }
-
     use({
         "Pocco81/auto-save.nvim",
         config = function()
@@ -60,9 +50,7 @@ return require('packer').startup(function(use)
             }
         end,
     })
-
     use({ "norcalli/nvim-colorizer.lua" })
-
     use({
       "kylechui/nvim-surround",
       tag = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -72,8 +60,8 @@ return require('packer').startup(function(use)
         })
       end
     })
-      
     use 'AlexvZyl/nordic.nvim'
     
     use ({ 'projekt0n/github-nvim-theme' })
+    use { 'mhartington/formatter.nvim' }
 end)
