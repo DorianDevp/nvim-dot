@@ -1,4 +1,5 @@
 local lsp_zero = require('lsp-zero')
+local lspConfig = require('lspconfig')
 
 lsp_zero.on_attach(function(client, bufnr)
   -- see :help lsp-zero-keybindings
@@ -9,10 +10,29 @@ end)
 -- here you can setup the language servers
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = { 'tsserver', 'ruff_lsp', 'angularls','svelte', 'cssls', 'html', 'intelephense', 'gopls' },
+  ensure_installed = { 'ts_ls', 'ruff_lsp', 'angularls','svelte', 'cssls', 'html', 'intelephense', 'gopls', 'psalm' },
   handlers = {
     function(server_name)
-      require('lspconfig')[server_name].setup({})
+      lspConfig[server_name].setup({})
+      if server_name == "psalm" then
+        lspConfig[server_name].setup({
+          root_dir = function(fname)
+            -- Look for psalm.xml, composer.json, or .git to determine the project root
+            return require('lspconfig').util.root_pattern('psalm.xml', 'psalm.xml.dist', 'composer.json', '.git')(fname) or vim.fn.getcwd()
+          end,
+        })
+      end
+      if server_name == "angularls" then
+        lspConfig.angularls.setup {
+          root_dir = lspConfig.util.root_pattern('angular.json', 'workspace.json', '.git'),  -- Znajduje katalog root
+          cmd = {
+            "ngserver",
+            "--stdio",
+            "--tsProbeLocations", "/Users/dorian/.local/share/nvim/mason/packages/angular-language-server/node_modules", 
+            "--ngProbeLocations", "/Users/dorian/.local/share/nvim/mason/packages/angular-language-server/node_modules/@angular/language-server/node_modules"
+          },
+        }
+      end
     end, 
   },
 })
