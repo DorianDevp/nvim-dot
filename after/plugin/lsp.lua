@@ -10,10 +10,11 @@ end)
 -- here you can setup the language servers
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = { 'ts_ls', 'ruff_lsp', 'angularls','svelte', 'cssls', 'html', 'intelephense', 'gopls', 'psalm' },
+  ensure_installed = { 'ts_ls', 'ruff_lsp', 'angularls', 'svelte', 'cssls', 'intelephense', 'gopls', 'psalm' },
   handlers = {
     function(server_name)
       lspConfig[server_name].setup({})
+
       if server_name == "psalm" then
         lspConfig[server_name].setup({
           root_dir = function(fname)
@@ -23,6 +24,10 @@ require('mason-lspconfig').setup({
         })
       end
       if server_name == "angularls" then
+        lspConfig.angularls.setup {
+          filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx', 'htmlangular' }
+        }
+
         lspConfig.angularls.setup {
           root_dir = lspConfig.util.root_pattern('angular.json', 'workspace.json', '.git'),  -- Znajduje katalog root
           cmd = {
